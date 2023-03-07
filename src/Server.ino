@@ -31,6 +31,7 @@ void setup() {
   //display_ready_screen();
   button_init();
   i2s_buff_init();
+  Serial.printf("All ready");
   //print_log_screen("+ All Ready");
 
   xTaskCreate(pong_task, "pong_task", 2048, NULL, 1, NULL);
@@ -45,6 +46,7 @@ void loop() {
 void listenForClient() {
   if (server.poll()) {
     //print_log_screen("+ Client Connected!");
+    Serial.printf("Client Connected!");
     client = server.accept();
     client.onMessage(handleMessage);
     client.onEvent(handleEvent);
@@ -72,10 +74,12 @@ void handleMessage(WebsocketsClient &client, WebsocketsMessage message) {
       i2s_TX_init();
       client.send(message.data());
       //print_log_screen("* Listening Mode *");
+      Serial.printf("listening Mode");
     }else if(states == Listening){
       states = Idle;
       i2s_TX_uninst();
       //print_log_screen("* IDLE Mode *");
+      Serial.printf("IDLE MODE");
     }
   }
 }
@@ -83,6 +87,7 @@ void handleMessage(WebsocketsClient &client, WebsocketsMessage message) {
 void handleEvent(WebsocketsClient &client, WebsocketsEvent event, String data) {
   if (event == WebsocketsEvent::ConnectionClosed) {
     //print_log_screen("- Client Disconnected!");
+    Serial.printf("Client Disconnected!");
     if(states == Listening){
         states = Idle;
         i2s_TX_uninst();
@@ -113,6 +118,7 @@ static void pong_task(void *arg){
 void pressed(Button2& btn) {
    if(btn == rButton && states == Idle){
     //print_log_screen("* Speaking Mode *");
+    Serial.printf("speaking mode");
     
     client.send(getStrTimestamp());
     states = Speaking;
@@ -126,6 +132,7 @@ void released(Button2& btn) {
   if(btn == rButton && states == Speaking){
     states = Idle;
     //print_log_screen("* IDLE Mode *");
+    Serial.printf("IDLE Mode");
     
     delay(100);
     if( i2sReadTaskHandler != NULL ){
