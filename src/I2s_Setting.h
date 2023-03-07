@@ -89,7 +89,8 @@ void i2s_read_data(){
 }
 
 void i2s_write_data(char *buf_ptr, int buf_size){
-  i2s_write_bytes(I2S_PORT_TX, buf_ptr, buf_size, portMAX_DELAY);
+  size_t bytes_written = 0;
+  i2s_write(I2S_PORT_TX, buf_ptr, buf_size, &bytes_written, portMAX_DELAY);
 }
 
 /*int i2s_write_bytes(i2s_port_ti2s_num, const void *src, size_t size, TickType_t ticks_to_wait)
