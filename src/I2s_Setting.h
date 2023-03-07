@@ -1,3 +1,6 @@
+/*https://docs.espressif.com/projects/esp-idf/en/v3.3/api-reference/peripherals/i2s.html*/
+
+
 #define I2S_WS_TX  12
 #define I2S_SCK_TX 13
 #define I2S_DATA_OUT_TX  15
@@ -88,6 +91,35 @@ void i2s_read_data(){
 void i2s_write_data(char *buf_ptr, int buf_size){
   i2s_write_bytes(I2S_PORT_TX, buf_ptr, buf_size, portMAX_DELAY);
 }
+
+/*int i2s_write_bytes(i2s_port_ti2s_num, const void *src, size_t size, TickType_t ticks_to_wait)
+Write data to I2S DMA transmit buffer.
+
+This function is deprecated. Use ‘i2s_write’ instead. This definition will be removed in a future release.
+
+Return
+The amount of bytes written, if timeout, the result will be less than the size passed in.
+ESP_FAIL Parameter error
+https://docs.espressif.com/projects/esp-idf/en/v3.3/api-reference/peripherals/i2s.html#_CPPv415i2s_write_bytes10i2s_port_tPKv6size_t10TickType_t
+*/
+
+
+
+
+  /*This function uses the ESP-IDF I2S driver to write data to the I2S interface configured for transmission. The function takes in a pointer to the buffer containing the data to be written, and the size of the buffer. It then calls the i2s_write_bytes() function with the appropriate parameters to write the data to the I2S interface.
+
+Here's a brief description of the parameters used in this function:
+
+buf_ptr: Pointer to the buffer containing the data to be written.
+buf_size: Size of the buffer in bytes.
+The i2s_write_bytes() function is part of the ESP-IDF I2S driver and writes data to the I2S interface. It takes the following parameters:
+
+i2s_num: The I2S interface to write to.
+src: Pointer to the buffer containing the data to be written.
+size: Size of the buffer in bytes.
+wait: Number of ticks to wait for the write to complete. If set to portMAX_DELAY, the function blocks until the write is complete.
+In this case, the wait parameter is set to portMAX_DELAY, which means the function will block until the write is complete.*/
+
 
 void i2s_buff_init(){
   i2s_read_buff = (char*) calloc(I2S_READ_LEN, sizeof(char));
